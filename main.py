@@ -159,19 +159,19 @@ class Minesweeper:
     def moov_bombs(self, col,line):
         """this function allows to move the bombs if the player clicks on a bomb at the first move"""
         corners = {(self.size - 1, self.size - 1), (0, 0), (0, self.size - 1), (self.size - 1, 0)}
-        li = []
+        li = {}
         for i in range(self.nbombs):
             pos = (randint(0, self.size - 1), randint(0, self.size - 1))
             while pos in corners or pos in li or self.board[pos[0]][pos[1]] != '*' or pos == (col, line):
                 pos = (randint(0, self.size - 1), randint(0, self.size - 1))
-            li.append(pos)
+            li[pos] = 'B'
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):
                 if self.ref_board[i][j] == 'B':
                     self.board[i][j] = '*'
                     self.ref_board[i][j] = 0
         for pos in li:
-            self.ref_board[pos[0]][pos[1]] = 'B'
+            self.ref_board[pos[0]][pos[1]] = li[pos]
         self.fill_in_board()
         return li
 
