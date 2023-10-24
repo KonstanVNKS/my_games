@@ -202,6 +202,7 @@ def main(difficulty):
 
 
 if __name__ == '__main__':
-    diff = int(input("Choose your difficulty: "))
+    """allow to launch the game by calling the main function and allowing the player to choose the difficulty"""
+    diff = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
     main(diff)
 
