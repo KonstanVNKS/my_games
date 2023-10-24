@@ -203,6 +203,9 @@ def main(difficulty):
 
 if __name__ == '__main__':
     """allow to launch the game by calling the main function and allowing the player to choose the difficulty"""
+    print("#######################")
+    print("Welcome to Minesweeper!")
+    print("#######################")
     diff = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
     main(diff)
 
