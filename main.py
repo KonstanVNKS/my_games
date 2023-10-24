@@ -5,17 +5,16 @@ Matricule: <000565802>
 Date: 15/11/2023
 Gaol: Create a minesweeper game with a GUI and adapting difficulty by the use of a class
 """
-
-
-
 import string as s
 from random import *
+
+
 class Minesweeper:
     def __init__(self, difficulty):
         """this function allows to initialize the game with the difficulty chosen by the player
          creating also the board and the reference board which will be used to check the number
          of mines around a case and the number of mines in the"""
-        self.ingame = True
+        self.in_game = True
         self.diff = difficulty
         if self.diff == 0:
             self.size = 9
@@ -55,8 +54,7 @@ class Minesweeper:
             else:
                 ltr = alphabet[j // 26 - 1]
                 ltr1 = alphabet[j % 26]
-                ltr = alphabet[j]
-                print(" ", ltr1 ,ltr, '|', end=' ')
+                print(ltr1, ltr, '|', end=' ')
                 for l in range(len(board[j])):
                     print((board[j][l]), "|", end=' ')
                 print()
@@ -156,7 +154,7 @@ class Minesweeper:
                     return False
         return True
 
-    def moov_bombs(self, col,line):
+    def move_bombs(self, col,line):
         """this function allows to move the bombs if the player clicks on a bomb at the first move"""
         corners = {(self.size - 1, self.size - 1), (0, 0), (0, self.size - 1), (self.size - 1, 0)}
         li = {}
@@ -172,12 +170,7 @@ class Minesweeper:
                     self.ref_board[i][j] = 0
         for pos in li:
             self.ref_board[pos[0]][pos[1]] = li[pos]
-
         self.fill_in_board()
-        # Une bombe est indiquée en créant une entrée dans le dictionnaire
-        # associant au tuple identifiant la case la chaîne de caractères "B" comme valeur. Seules les cases
-        # comportant une bombe sont reprises dans le dictionnaire
-
         return li
 
 
@@ -185,30 +178,27 @@ def main(difficulty):
     """this function allows to play the game"""
     game = Minesweeper(difficulty)
     game.print_board()
-    while not game.check_win() and game.ingame:
+    while not game.check_win() and game.in_game:
         col = int(input("Choose you column: "))
         line = input("Choose your line: ").upper()
         col, line = game.parse_input(col, line)
         if game.ref_board[col][line] == 'B':
-            game.ingame = False
+            game.in_game = False
         else:
             if difficulty == 2:
-                game.moov_bombs(col, line)
+                game.move_bombs(col, line)
             game.propagate_click(col, line)
             game.fill_in_board()
             game.win = game.check_win()
             game.print_board()
-
-
-    if game.check_win() :
+    if game.check_win():
         print("#######################")
         print("You won! Congratulation")
         print("#######################")
-
     else:
-        print("#######################")
+        print("###################")
         print("You lost! Try again")
-        print("#######################")
+        print("###################")
 
 
 if __name__ == '__main__':
