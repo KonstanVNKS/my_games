@@ -173,6 +173,14 @@ class Minesweeper:
         self.fill_in_board()
         return li
 
+    def continue_game(self):
+        """this function allows to continue the game if the player wants to play again"""
+        answer = input("Do you want to play again? (y/n): ")
+        if answer == 'yes' or answer == 'y' or answer == 'Y' or answer == 'Yes':
+            return True
+        else:
+            return False
+
 
 def main(difficulty):
     """this function allows to play the game"""
@@ -199,6 +207,8 @@ def main(difficulty):
         print("###################")
         print("You lost! Try again")
         print("###################")
+    if game.continue_game():
+        main(difficulty)
 
 
 if __name__ == '__main__':
