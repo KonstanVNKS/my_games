@@ -213,9 +213,9 @@ def main(difficulty):
     if game.continue_game():
         main(difficulty)
     else:
-        print("######################")
-        print("Thank you for playing!")
-        print("#######################")
+        print("####################################")
+        print("Thank you for playing! See you soon!")
+        print("####################################")
 
 
 if __name__ == '__main__':
