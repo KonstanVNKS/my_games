@@ -20,11 +20,9 @@ class Minesweeper:
             self.size = 9
         else:
             self.size = int(input("Enter the size of the board: "))
-
         self.board = [['*' for i in range(self.size)] for j in range(self.size)]
         self.ref_board = [[0 for i in range(self.size)] for j in range(self.size)]
-        self.win = False
-        self.lose = False
+        self.nbombs = 0
         self.place_mines()
         self.fill_in_board()
 
@@ -91,10 +89,12 @@ class Minesweeper:
         difficulty = self.diff
         ref_board = self.ref_board
         if difficulty == 0:
+            self.nbombs = 0
             with open('bombes.txt', 'r') as f:
                 for line in f:
                     line = line.split(',')
                     ref_board[int(line[0])][int(line[1])] = 'B'
+                    self.nbombs += 1
         elif difficulty == 1 or difficulty == 2:
             bombs = self.generate_random_pos()
             self.nbombs = len(bombs)
@@ -185,6 +185,9 @@ class Minesweeper:
 def main(difficulty):
     """this function allows to play the game"""
     game = Minesweeper(difficulty)
+    if game.size > 12:
+        raise ValueError("The size of the board must be at the maximum 12")
+    print('we planted {} bombs'.format(game.nbombs))
     game.print_board()
     while not game.check_win() and game.in_game:
         col = int(input("Choose you column: "))
@@ -209,6 +212,10 @@ def main(difficulty):
         print("###################")
     if game.continue_game():
         main(difficulty)
+    else:
+        print("######################")
+        print("Thank you for playing!")
+        print("#######################")
 
 
 if __name__ == '__main__':
