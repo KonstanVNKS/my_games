@@ -211,6 +211,7 @@ def main(difficulty):
         print("You lost! Try again")
         print("###################")
     if game.continue_game():
+        difficulty = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
         main(difficulty)
     else:
         print("####################################")
@@ -225,4 +226,3 @@ if __name__ == '__main__':
     print("#######################")
     diff = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
     main(diff)
-
