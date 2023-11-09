@@ -4,6 +4,8 @@ Nom: <Vanakas>
 Matricule: <000565802>
 Date: 15/11/2023
 Gaol: Create a minesweeper game with a GUI and adapting difficulty by the use of a class
+!!!Most part of the code was reused from a last year project of the same game but without the difficulty choice and
+the bombs position changes and with the system of flags. So most of the code was adapted to the new requirements.!!!
 """
 import string as s
 from random import *
