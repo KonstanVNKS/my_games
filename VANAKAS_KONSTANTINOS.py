@@ -4,8 +4,9 @@ Nom: <Vanakas>
 Matricule: <000565802>
 Date: 15/11/2023
 Gaol: Create a minesweeper game with a GUI and adapting difficulty by the use of a class
-!!!Most part of the code was reused from a last year project of the same game but without the difficulty choice and
-the bombs position changes and with the system of flags. So most of the code was adapted to the new requirements.
+!!!Most part of the code's logic and structure was reused from a last year project of the same game but without the
+difficulty choice and the bombs position changes and with the system of flags. So most of the code was adapted to the
+new requirements.
 The previous project was the first required in the course of INFO-F-106 of the academic year 2022/2023!!!
 """
 import string as s
@@ -16,7 +17,7 @@ class Minesweeper:
     def __init__(self, difficulty):
         """this function allows to initialize the game with the difficulty chosen by the player
          creating also the board and the reference board which will be used to check the number
-         of mines around a case and the number of mines in the"""
+         of mines around a case"""
         self.in_game = True
         self.diff = difficulty
         if self.diff == 0:
