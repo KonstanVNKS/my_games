@@ -136,7 +136,7 @@ class Minesweeper:
         return line, col
 
     def propagate_click(self, pos_x, pos_y):
-        """this function allows to open a case and all the cases around it if there's no mine around it"""
+        """this function allows to open a case and all the 8 cases around it if there's no mine around it"""
         board= self.board
         ref_board = self.ref_board
         if ref_board[pos_x][pos_y] == 'B':
@@ -145,8 +145,8 @@ class Minesweeper:
             board[pos_x][pos_y] = ref_board[pos_x][pos_y]
             if ref_board[pos_x][pos_y] == '0':
                 for i in self.get_neighbors(ref_board, pos_x, pos_y):
-                    if board[i[0]][i[1]] == '*':
-                        self.propagate_click(i[0], i[1])
+                    if board[i[0]][i[1]] == '*' and ref_board[i[0]][i[1]] != 'B':
+                        board[i[0]][i[1]] = ref_board[i[0]][i[1]]
         return board
 
     def check_win(self):
@@ -188,20 +188,21 @@ class Minesweeper:
 
 def main(difficulty):
     """this function allows to play the game"""
+    alphabet = list(s.ascii_uppercase)
     game = Minesweeper(difficulty)
-    if game.size > 12:
-        raise ValueError("The size of the board must be at the maximum 12")
+
     print('we planted {} bombs'.format(game.nbombs))
     game.print_board()
     while not game.check_win() and game.in_game:
-        col = int(input("Choose you column: "))
-        line = input("Choose your line: ").upper()
+        col = int(input("Choose you column (0 to {}): ".format(game.size -1)))
+        line = input("Choose your line(A to {}): ".format(alphabet[game.size - 1])).upper()
         col, line = game.parse_input(col, line)
         if game.ref_board[col][line] == 'B':
             game.in_game = False
         else:
             if difficulty == 2:
                 game.move_bombs(col, line)
+                game.fill_in_board()
             game.propagate_click(col, line)
             game.fill_in_board()
             game.win = game.check_win()
