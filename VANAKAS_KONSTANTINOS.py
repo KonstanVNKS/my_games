@@ -89,6 +89,7 @@ class Minesweeper:
                 pos = (randint(0, self.size-1), randint(0, self.size-1))
             li.append(pos)
         return li
+
     def place_mines(self):
         difficulty = self.diff
         ref_board = self.ref_board
@@ -146,7 +147,7 @@ class Minesweeper:
             if ref_board[pos_x][pos_y] == '0':
                 for i in self.get_neighbors(ref_board, pos_x, pos_y):
                     if board[i[0]][i[1]] == '*' and ref_board[i[0]][i[1]] != 'B':
-                        board[i[0]][i[1]] = ref_board[i[0]][i[1]]
+                        self.propagate_click(i[0], i[1])
         return board
 
     def check_win(self):
@@ -194,8 +195,8 @@ def main(difficulty):
     print('we planted {} bombs'.format(game.nbombs))
     game.print_board()
     while not game.check_win() and game.in_game:
-        col = int(input("Choose you column (0 to {}): ".format(game.size -1)))
-        line = input("Choose your line(A to {}): ".format(alphabet[game.size - 1])).upper()
+        col = int(input("Choose your column (0 to {}): ".format(game.size -1)))
+        line = input("Choose your line (A to {}): ".format(alphabet[game.size - 1])).upper()
         col, line = game.parse_input(col, line)
         if game.ref_board[col][line] == 'B':
             game.in_game = False
