@@ -7,7 +7,7 @@ Gaol: Create a minesweeper game with a GUI and adapting difficulty by the use of
 !!!Most part of the code's logic and structure was reused from a last year project of the same game but without the
 difficulty choice and the bombs position changes and with the system of flags. So most of the code was adapted to the
 new requirements.
-The previous project was the first required in the course of INFO-F-106 of the academic year 2022/2023!!!
+The previous project was the first required in the course of INFO-F-106 of the academic year 2022/2023 !!!
 """
 import string as s
 from random import *
