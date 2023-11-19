@@ -29,6 +29,7 @@ class Minesweeper:
         self.nbombs = 0
         self.place_mines()
         self.fill_in_board()
+        self.nflags = self.nbombs * 2
 
     def print_board(self):
         """this function  allow us to print the board while cycling at every move of the player  with the frame and the
@@ -126,15 +127,33 @@ class Minesweeper:
         self.ref_board = ref_board
         return ref_board
 
-    def parse_input(self, col, line):
+    def parse_input(self, col, line, action ):
         """this function allows to convert the input of the player into a tuple of int"""
         alphabet = list(s.ascii_uppercase)
-        if line in alphabet:
-            line = alphabet.index(line)
-        else:
+        if action == 'F':
+            line = line.upper()
+            if line in alphabet:
+                line = alphabet.index(line)
+            else:
+                col = int(col)
             col = int(col)
-        col = int(col)
-        return line, col
+            return line, col
+        elif action == 'C':
+            if line in alphabet:
+                line = alphabet.index(line)
+            else:
+                col = int(col)
+            col = int(col)
+            return line, col
+
+    def flag(self, pos_x, pos_y):
+        """this function allows to flag a case"""
+        board = self.board
+        if board[pos_x][pos_y] == '*':
+            board[pos_x][pos_y] = 'F'
+        elif board[pos_x][pos_y] == 'F':
+            board[pos_x][pos_y] = '*'
+        return board
 
     def propagate_click(self, pos_x, pos_y):
         """this function allows to open a case and all the 8 cases around it if there's no mine around it"""
@@ -156,6 +175,10 @@ class Minesweeper:
         for i in range(len(board)):
             for j in range(len(board[0])):
                 if board[i][j] == '*' and ref_board[i][j] != 'B':
+                    return False
+                if board[i][j] == 'F' and ref_board[i][j] != 'B':
+                    return False
+                if self.nflags == 0:
                     return False
         return True
 
@@ -191,23 +214,30 @@ def main(difficulty):
     """this function allows to play the game"""
     alphabet = list(s.ascii_uppercase)
     game = Minesweeper(difficulty)
-
     print('we planted {} bombs'.format(game.nbombs))
+    print('you have {} flags'.format(game.nflags))
     game.print_board()
     while not game.check_win() and game.in_game:
+        action = input("Choose your action (C = click, F = flag): ").upper()
         col = int(input("Choose your column (0 to {}): ".format(game.size -1)))
         line = input("Choose your line (A to {}): ".format(alphabet[game.size - 1])).upper()
-        col, line = game.parse_input(col, line)
-        if game.ref_board[col][line] == 'B':
-            game.in_game = False
-        else:
-            if difficulty == 2:
-                game.move_bombs(col, line)
-                game.fill_in_board()
-            game.propagate_click(col, line)
-            game.fill_in_board()
-            game.win = game.check_win()
+        col, line = game.parse_input(col, line, action)
+        if action == 'F':
+            game.board = game.flag(col, line)
             game.print_board()
+            game.nflags -= 1
+            print('you have {} flags'.format(game.nflags))
+        elif action == 'C':
+            if game.ref_board[col][line] == 'B':
+                game.in_game = False
+            else:
+                if difficulty == 2:
+                    game.move_bombs(col, line)
+                    game.fill_in_board()
+                game.propagate_click(col, line)
+                game.fill_in_board()
+                game.win = game.check_win()
+                game.print_board()
     if game.check_win():
         print("#######################")
         print("You won! Congratulation")
