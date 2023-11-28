@@ -13,6 +13,7 @@ import string as s
 from random import *
 
 
+
 class Minesweeper:
     def __init__(self, difficulty):
         """this function allows to initialize the game with the difficulty chosen by the player
@@ -127,7 +128,7 @@ class Minesweeper:
         self.ref_board = ref_board
         return ref_board
 
-    def parse_input(self, col, line, action ):
+    def parse_input(self, col, line, action):
         """this function allows to convert the input of the player into a tuple of int"""
         alphabet = list(s.ascii_uppercase)
         if action == 'F':
@@ -157,7 +158,7 @@ class Minesweeper:
 
     def propagate_click(self, pos_x, pos_y):
         """this function allows to open a case and all the 8 cases around it if there's no mine around it"""
-        board= self.board
+        board = self.board
         ref_board = self.ref_board
         if ref_board[pos_x][pos_y] == 'B':
             return board
