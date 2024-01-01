@@ -11,10 +11,11 @@ The previous project was the first required in the course of INFO-F-106 of the a
 """
 import string as s
 from random import *
-
+import pygame
 
 
 class Minesweeper:
+
     def __init__(self, difficulty):
         """this function allows to initialize the game with the difficulty chosen by the player
          creating also the board and the reference board which will be used to check the number
@@ -263,3 +264,4 @@ if __name__ == '__main__':
     print("#######################")
     diff = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
     main(diff)
+
