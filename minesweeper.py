@@ -2,30 +2,24 @@
 Prenom:<Konstantinos>
 Nom: <Vanakas>
 Matricule: <000565802>
-Date: 15/11/2023
-Gaol: Create a minesweeper game with a GUI and adapting difficulty by the use of a class
-!!!Most part of the code's logic and structure was reused from a last year project of the same game but without the
-difficulty choice and the bombs position changes and with the system of flags. So most of the code was adapted to the
-new requirements.
-The previous project was the first required in the course of INFO-F-106 of the academic year 2022/2023 !!!
+Date: 15/11/2023 (date de finalisation du projet)
+Gaol: Create a minesweeper game with a GUI using tkinter
 """
 import string as s
 from random import *
-import pygame
 
 
+
+    
 class Minesweeper:
 
-    def __init__(self, difficulty):
+    def __init__(self, difficulty=1):
         """this function allows to initialize the game with the difficulty chosen by the player
          creating also the board and the reference board which will be used to check the number
          of mines around a case"""
         self.in_game = True
         self.diff = difficulty
-        if self.diff == 0:
-            self.size = 9
-        else:
-            self.size = int(input("Enter the size of the board: "))
+        self.size = 9
         self.board = [['*' for i in range(self.size)] for j in range(self.size)]
         self.ref_board = [[0 for i in range(self.size)] for j in range(self.size)]
         self.nbombs = 0
@@ -96,18 +90,10 @@ class Minesweeper:
     def place_mines(self):
         difficulty = self.diff
         ref_board = self.ref_board
-        if difficulty == 0:
-            self.nbombs = 0
-            with open('bombes.txt', 'r') as f:
-                for line in f:
-                    line = line.split(',')
-                    ref_board[int(line[0])][int(line[1])] = 'B'
-                    self.nbombs += 1
-        elif difficulty == 1 or difficulty == 2:
-            bombs = self.generate_random_pos()
-            self.nbombs = len(bombs)
-            for pos in bombs:
-                ref_board[pos[0]][pos[1]] = 'B'
+        bombs = self.generate_random_pos()
+        self.nbombs = len(bombs)
+        for pos in bombs:
+            ref_board[pos[0]][pos[1]] = 'B'
         self.ref_board = ref_board
         return ref_board
 
@@ -184,24 +170,6 @@ class Minesweeper:
                     return False
         return True
 
-    def move_bombs(self, col,line):
-        """this function allows to move the bombs if the player clicks on a bomb at the first move"""
-        corners = {(self.size - 1, self.size - 1), (0, 0), (0, self.size - 1), (self.size - 1, 0)}
-        li = {}
-        for i in range(self.nbombs):
-            pos = (randint(0, self.size - 1), randint(0, self.size - 1))
-            while pos in corners or pos in li or self.board[pos[0]][pos[1]] != '*' or pos == (col, line):
-                pos = (randint(0, self.size - 1), randint(0, self.size - 1))
-            li[pos] = 'B'
-        for i in range(len(self.board)):
-            for j in range(len(self.board[0])):
-                if self.ref_board[i][j] == 'B':
-                    self.board[i][j] = '*'
-                    self.ref_board[i][j] = 0
-        for pos in li:
-            self.ref_board[pos[0]][pos[1]] = li[pos]
-        self.fill_in_board()
-        return li
 
     def continue_game(self):
         """this function allows to continue the game if the player wants to play again"""
@@ -212,56 +180,5 @@ class Minesweeper:
             return False
 
 
-def main(difficulty):
-    """this function allows to play the game"""
-    alphabet = list(s.ascii_uppercase)
-    game = Minesweeper(difficulty)
-    print('we planted {} bombs'.format(game.nbombs))
-    print('you have {} flags'.format(game.nflags))
-    game.print_board()
-    while not game.check_win() and game.in_game:
-        action = input("Choose your action (C = click, F = flag): ").upper()
-        col = int(input("Choose your column (0 to {}): ".format(game.size -1)))
-        line = input("Choose your line (A to {}): ".format(alphabet[game.size - 1])).upper()
-        col, line = game.parse_input(col, line, action)
-        if action == 'F':
-            game.board = game.flag(col, line)
-            game.print_board()
-            game.nflags -= 1
-            print('you have {} flags'.format(game.nflags))
-        elif action == 'C':
-            if game.ref_board[col][line] == 'B':
-                game.in_game = False
-            else:
-                if difficulty == 2:
-                    game.move_bombs(col, line)
-                    game.fill_in_board()
-                game.propagate_click(col, line)
-                game.fill_in_board()
-                game.win = game.check_win()
-                game.print_board()
-    if game.check_win():
-        print("#######################")
-        print("You won! Congratulation")
-        print("#######################")
-    else:
-        print("###################")
-        print("You lost! Try again")
-        print("###################")
-    if game.continue_game():
-        difficulty = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
-        main(difficulty)
-    else:
-        print("####################################")
-        print("Thank you for playing! See you soon!")
-        print("####################################")
 
-
-if __name__ == '__main__':
-    """allow to launch the game by calling the main function and allowing the player to choose the difficulty"""
-    print("#######################")
-    print("Welcome to Minesweeper!")
-    print("#######################")
-    diff = int(input("Choose your difficulty (0 = easy , 1 = normal, 2 = hard): "))
-    main(diff)
 
